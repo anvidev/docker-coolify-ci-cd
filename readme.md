@@ -87,3 +87,37 @@ This command uploads the image so that your VPS can pull it when deploying with 
 
 Finally, set up your project on Coolify. Follow Coolify’s interface to connect the repository and 
 configure the pipeline. Once done, Coolify will now be able to deploy the application.
+
+To get automatic deplyments on new commits, see the [documentation](https://coolify.io/docs/knowledge-base/git/github/integration/) for integrations.
+
+## Build and push image with Github Actions
+
+To automate the build and push process, you can use GitHub Actions.
+
+ 1. Create a Docker Hub Access Token: Go to Docker Hub and generate a personal access token.
+ 2. Add the Token as a GitHub Secret: In your GitHub repository settings, add the token as a secret named DOCKER_HUB_TOKEN.
+ 3. Create the GitHub Actions Workflow: Add a new yaml file under .github/workflows with the following content:
+
+```yml
+name: Docker image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Docker image
+      run: docker build --platform linux/amd64 -t anvigy/api-example .
+    - name: Push Docker image
+      run: |
+        docker login -u anvigy -p ${{ secrets.DOCKER_HUB_TOKEN }}
+        docker push anvigy/api-example:latest
+```
+
+This will automatically build and push your Docker image whenever changes are pushed to the `main` branch.

@@ -1,0 +1,19 @@
+name: Docker image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Docker image
+      run: docker build --platform linux/amd64 -t anvigy/api-example .
+    - name: Push Docker image
+      run: |
+        docker login -u anvigy -p ${{ secrets.DOCKER_HUB_TOKEN }}
+        docker push anvigy/api-example:latest

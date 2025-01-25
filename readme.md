@@ -15,7 +15,7 @@ WORKDIR /app
 COPY go.* .
 RUN go mod download && go mod verify
 COPY . .
-RUN CGO_ENABLED=0 go build -o api ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -o api ./cmd/api
 
 FROM scratch
 WORKDIR /app

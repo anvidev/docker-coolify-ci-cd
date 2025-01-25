@@ -86,5 +86,4 @@ This command uploads the image so that your VPS can pull it when deploying with 
 ## Add new project to Coolify
 
 Finally, set up your project on Coolify. Follow Coolify’s interface to connect the repository and 
-configure the pipeline. Once done, Coolify will automatically deploy your application when there are 
-new commits or pull requests merged into the main branch.
+configure the pipeline. Once done, Coolify will now be able to deploy the application.

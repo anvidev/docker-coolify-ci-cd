@@ -97,7 +97,7 @@ To automate the build and push process, you can use GitHub Actions.
  3. Create a Coolify API key: Go to Keys & Tokens > API Tokens.
  4. Add the API key as a GitHub repository secret and name it `COOLIFY_TOKEN`.
  5. Get the webhook endpoint from Coolify: Your resource > Webhook menu > Deploy Webhook and add it as a GitHub repository secret as `COOLIFY_WEBHOOK`. 
- 3. Create the GitHub Actions Workflow: Add a new yaml file under .github/workflows with the following content:
+ 6. Create the GitHub Actions Workflow: Add a new yaml file under .github/workflows with the following content:
 
 ```yml
 name: Docker image CI

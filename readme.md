@@ -85,17 +85,18 @@ This command uploads the image so that your VPS can pull it when deploying with 
 
 ## Add new project to Coolify
 
-Finally, set up your project on Coolify. Follow Coolify’s interface to connect the repository and 
-configure the pipeline. Once done, Coolify will now be able to deploy the application.
+Finally, set up your project on Coolify. Follow Coolify’s interface to connect the repository. 
+Once done, Coolify will now be able to deploy the application.
 
-To get automatic deplyments on new commits, see the [documentation](https://coolify.io/docs/knowledge-base/git/github/integration/) for integrations.
-
-## Build and push image with Github Actions
+## Build, push image and deploy with Github Actions
 
 To automate the build and push process, you can use GitHub Actions.
 
  1. Create a Docker Hub Access Token: Go to Docker Hub and generate a personal access token.
- 2. Add the Token as a GitHub Secret: In your GitHub repository settings, add the token as a secret named DOCKER_HUB_TOKEN.
+ 2. Add the Token as a GitHub repository secret and name it `DOCKER_HUB_TOKEN`.
+ 3. Create a Coolify API key: Go to Keys & Tokens > API Tokens.
+ 4. Add the API key as a GitHub repository secret and name it `COOLIFY_TOKEN`.
+ 5. Get the webhook endpoint from Coolify: Your resource > Webhook menu > Deploy Webhook and add it as a GitHub repository secret as `COOLIFY_WEBHOOK`. 
  3. Create the GitHub Actions Workflow: Add a new yaml file under .github/workflows with the following content:
 
 ```yml
@@ -118,6 +119,10 @@ jobs:
       run: |
         docker login -u anvigy -p ${{ secrets.DOCKER_HUB_TOKEN }}
         docker push anvigy/api-example:latest
+    - name: Deploy to Coolify
+      run: |
+        curl --request GET '${{ secrets.COOLIFY_WEBHOOK }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
 ```
 
-This will automatically build and push your Docker image whenever changes are pushed to the `main` branch.
+This will automatically build, push your Docker image and trigger your Coolify resource to make a new deployment
+whenever changes are pushed to the `main` branch.

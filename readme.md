@@ -9,7 +9,7 @@ deployment through Docker Compose when new commits or pull requests are merged i
 Start by creating the Dockerfile that will define how your application is built and packaged into a
 Docker image. Below is an example Dockerfile for a Go application:
 
-```yml
+```docker
 FROM golang:1.23 AS builder
 WORKDIR /app 
 COPY go.* .

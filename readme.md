@@ -2,7 +2,7 @@
 
 This guide outlines how to set up a CI/CD pipeline to build and deploy a Docker image using Coolify.
 The process involves creating a Docker image, pushing it to Docker Hub, and using Coolify to manage 
-deployment through Docker Compose when new commits or pull requests are merged into the `main` branch.
+deployment through Docker Compose when a new release is published.
 
 ## Create the Dockerfile
 
@@ -103,10 +103,8 @@ To automate the build and push process, you can use GitHub Actions.
 name: Docker image CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -125,4 +123,4 @@ jobs:
 ```
 
 This will automatically build, push your Docker image and trigger your Coolify resource to make a new deployment
-whenever changes are pushed to the `main` branch.
+whenever a new release is published.
